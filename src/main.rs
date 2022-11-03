@@ -4,7 +4,7 @@ mod repository;
 
 use actix_web::{middleware::Logger, web::Data, App, HttpServer};
 use api::home::index_responce;
-use openssl::ssl::{SslAcceptor, SslFiletype, SslMethod};
+// use openssl::ssl::{SslAcceptor, SslFiletype, SslMethod};
 use repository::mongodb_repo::MongoRepo;
 
 #[actix_web::main]
