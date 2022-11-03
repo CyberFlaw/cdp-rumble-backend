@@ -22,6 +22,7 @@ impl MongoRepo {
             Ok(v) => v.to_string(),
             Err(_) => format!("Error Loading .env"),
         };
+
         let client = Client::with_uri_str(uri).await.unwrap();
         let db = client.database("rumble");
         let col: Collection<User> = db.collection("User");
