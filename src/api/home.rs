@@ -1,32 +1,30 @@
 use actix_web::{
-    //     error::ResponseError,
     get,
     http::header::ContentType,
-    //     web::Path,
-    //     HttpResponse,
-    //     http::{header::ContentType, StatusCode},
-    //     post, put,
-    //     web::Data,
-    // web::Json,
-    HttpResponse,
+    web::{Json, Path},
+    HttpResponse, Responder, Result,
 };
 
-// use serde::{Deserialize, Serialize};
-
-// use derive_more::Display;
-
-// pub struct TaskIdentifier {
-//       task_global_id: String
-// }
-
-// #[get("/")]
-// pub async fn get_task() -> Json<String> {
-//     return Json("Hello World".to_string());
-// }
+use serde::Serialize;
 
 #[get("/")]
 pub async fn index_responce() -> HttpResponse {
     HttpResponse::Ok()
         .content_type(ContentType::plaintext())
         .body("Server Started... 🚀")
+}
+
+#[derive(Serialize)]
+struct JsonTest {
+    name: String,
+    age: u16,
+}
+
+#[get("/json/{name}")]
+pub async fn json_check(name: Path<String>) -> Result<impl Responder> {
+    let obj = JsonTest {
+        name: name.to_string(),
+        age: 23,
+    };
+    Ok(Json(obj))
 }

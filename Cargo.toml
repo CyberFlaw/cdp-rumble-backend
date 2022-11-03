@@ -8,10 +8,12 @@ edition = "2021"
 [dependencies]
 actix-web = "4"
 serde = { version = "1.0", features = ["derive"] }
+serde_json = "1"
 env_logger = "0.9"
 dotenv = "0.15.0"
 futures = "0.3.25"
 openssl = { version = "0.10", features = ["vendored"] }
+smartcore = {version = "0.2.1", features=["serde"]}
 
 [dependencies.mongodb]
 version = "2.3.0"

@@ -9,5 +9,5 @@ pub struct User {
     pub unqid: u64,
     pub image: String,
     pub rooms: Vec<ObjectId>,
-    pub emails: String,
+    pub email: String,
 }
