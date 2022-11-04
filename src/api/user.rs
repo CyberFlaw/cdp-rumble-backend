@@ -28,37 +28,35 @@ pub async fn register_user(mut payload: web::Payload, req: HttpRequest) -> Resul
 
     let obj = serde_json::from_slice::<User>(&body)?;
 
-    //  update database
     let db = req.app_data::<web::Data<MongoRepo>>().unwrap();
-    let _insert = match db.register_user(obj).await {
-        Ok(_val) => println!("Successfully inserted!"),
-        Err(_) => {}
-    };
+    let exists = db.user_exist(&obj.email).await;
+
+    if exists {
+        let _insert = match db.register_user(obj).await {
+            Ok(_val) => println!("Successfully inserted!"),
+            Err(_) => {}
+        };
+    }
 
     Ok(HttpResponse::Accepted().body("User Registered!"))
 }
 
 //  Get details from unique 6 digit number
-
 #[get("/user/{id}")]
-pub async fn fetch_user_data(id: web::Path<String>) -> Result<impl Responder> {
-    println!("{id}");
-    // fetch data from db and populate struct
-    let obj = User {
-        name: "hello".to_string(),
-        email: "test@boi.com".to_string(),
-        image: "https:img.com".to_string(),
-    };
-    Ok(web::Json(obj))
+pub async fn fetch_user_data(id: web::Path<u32>, req: HttpRequest) -> Result<impl Responder> {
+    let id = id.into_inner();
+    let db = req.app_data::<web::Data<MongoRepo>>().unwrap();
+    let obj = db.find_user(id).await.unwrap();
+
+    Ok(HttpResponse::Ok().json(obj))
 }
 
 //  Get all 6 digit ids of users in the database
-#[get("/user/all")]
-pub async fn fetch_all_users() -> Result<impl Responder> {
-    //  make vec mutable before updating code
-    let user_list: Vec<i64> = vec![0, 1, 2];
+// fix the cursor stream handler
+// #[get("/user/all")]
+// pub async fn fetch_all_users(req: HttpRequest) -> Result<impl Responder> {
+//     let db = req.app_data::<web::Data<MongoRepo>>().unwrap();
+//     let users = db.get_all_users().await;
 
-    //  fetch db and push_back to vector
-
-    Ok(HttpResponse::Ok().json(user_list))
-}
+//     Ok(HttpResponse::Ok().json(web::Json(users)))
+// }
