@@ -1,10 +1,8 @@
 extern crate dotenv;
 
-use crate::model::user_model::User;
+use crate::model::{room_model::Rooms, user_model::User};
 use dotenv::dotenv;
-// use futures::TryFutureExt;
 use mongodb::{
-    // bson::extjson::de::Error,
     // results::InsertOneResult,
     Client,
     Collection,
@@ -12,7 +10,8 @@ use mongodb::{
 use std::env;
 
 pub struct MongoRepo {
-    col: Collection<User>,
+    pub users: Collection<User>,
+    pub rooms: Collection<Rooms>,
 }
 
 impl MongoRepo {
@@ -24,8 +23,13 @@ impl MongoRepo {
         };
 
         let client = Client::with_uri_str(uri).await.unwrap();
-        let db = client.database("rumble");
-        let col: Collection<User> = db.collection("User");
-        MongoRepo { col }
+        let db = client.database("Rumble");
+        let user_col: Collection<User> = db.collection("Users");
+        let room_col: Collection<Rooms> = db.collection("Rooms");
+
+        MongoRepo {
+            users: user_col,
+            rooms: room_col,
+        }
     }
 }

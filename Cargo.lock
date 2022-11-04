@@ -1764,6 +1764,7 @@ dependencies = [
  "futures",
  "mongodb",
  "openssl",
+ "rand",
  "serde",
  "serde_json",
  "smartcore",
