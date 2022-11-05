@@ -1,0 +1,171 @@
+[
+  {
+    "v": 1,
+    "name": "Rumble",
+    "folders": [],
+    "requests": [
+      {
+        "v": "1",
+        "endpoint": "http://127.0.0.1:5000/user/register",
+        "name": "user register",
+        "params": [],
+        "headers": [
+          {
+            "active": true,
+            "key": "Content-Type",
+            "value": ""
+          }
+        ],
+        "method": "POST",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        },
+        "preRequestScript": "",
+        "testScript": "",
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n  \"name\": \"flip\",\n  \"image\": \"https://lh3.googleusercontent.com/a/ALm5wu07mTMPimG1xUJ_EC0HmFdnEBiIQKTmblDbDQBh=s96-c\",\n  \"email\": \"dev.testboi@gmail.com\"\n}"
+        }
+      },
+      {
+        "v": "1",
+        "endpoint": "http://127.0.0.1:5000/user/430974",
+        "name": "fetch user by id",
+        "params": [],
+        "headers": [
+          {
+            "active": true,
+            "key": "Content-Type",
+            "value": ""
+          }
+        ],
+        "method": "GET",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        },
+        "preRequestScript": "",
+        "testScript": "",
+        "body": {
+          "contentType": "application/json",
+          "body": ""
+        }
+      },
+      {
+        "v": "1",
+        "endpoint": "http://127.0.0.1:5000/user/all",
+        "name": "fetch all user ids",
+        "params": [],
+        "headers": [
+          {
+            "active": true,
+            "key": "Content-Type",
+            "value": ""
+          }
+        ],
+        "method": "GET",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        },
+        "preRequestScript": "",
+        "testScript": "",
+        "body": {
+          "contentType": "application/json",
+          "body": ""
+        }
+      },
+      {
+        "v": "1",
+        "endpoint": "http://127.0.0.1:5000/",
+        "name": "health check",
+        "params": [],
+        "headers": [
+          {
+            "active": true,
+            "key": "Content-Type",
+            "value": ""
+          }
+        ],
+        "method": "GET",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        },
+        "preRequestScript": "",
+        "testScript": "",
+        "body": {
+          "contentType": "application/json",
+          "body": ""
+        }
+      },
+      {
+        "v": "1",
+        "endpoint": "http://127.0.0.1:5000/join/430974/283544",
+        "name": "add room",
+        "params": [],
+        "headers": [
+          {
+            "active": true,
+            "key": "Content-Type",
+            "value": ""
+          }
+        ],
+        "method": "POST",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        },
+        "preRequestScript": "",
+        "testScript": "",
+        "body": {
+          "contentType": "application/json",
+          "body": ""
+        }
+      },
+      {
+        "v": "1",
+        "endpoint": "http://127.0.0.1:5000/room/430974283544",
+        "name": "fetch room by id",
+        "params": [],
+        "headers": [
+          {
+            "active": true,
+            "key": "Content-Type",
+            "value": ""
+          }
+        ],
+        "method": "GET",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        },
+        "preRequestScript": "",
+        "testScript": "",
+        "body": {
+          "contentType": "application/json",
+          "body": ""
+        }
+      }
+    ]
+  }
+]

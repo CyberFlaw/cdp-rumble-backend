@@ -26,7 +26,7 @@ impl MongoRepo {
         };
 
         let user = self
-            .users
+            .reg_col
             .insert_one(new_doc, None)
             .await
             .expect("Failed to register user!");
@@ -39,7 +39,7 @@ impl MongoRepo {
 
         let filter = doc! {"email": email};
         let user = self
-            .users
+            .reg_col
             .find_one(filter, None)
             .await
             .ok()
@@ -54,7 +54,7 @@ impl MongoRepo {
     pub async fn find_user(&self, id: u32) -> Result<user_model::User, Error> {
         let filter = doc! {"unqid": id};
         let user = self
-            .users
+            .reg_col
             .find_one(filter, None)
             .await
             .ok()
@@ -65,17 +65,29 @@ impl MongoRepo {
 
     //     fix this
 
-    //     pub async fn get_all_users(&self) -> Vec<user_model::User> {
-    //         let users = self
-    //             .users
-    //             .find(None, None)
-    //             .await
-    //             .ok()
-    //             .expect("Failed to retrive users");
+    // pub async fn get_all_users(&self) -> Vec<user_model::User> {
+    //     let users = self
+    //         .reg_col
+    //         .find(None, None)
+    //         .await
+    //         .ok()
+    //         .expect("Failed to retrive users");
 
-    //         // This code could seriously use some error handling... Must be improved
-    //         let serial = users.collect().await;
+    //     // This code could seriously use some error handling... Must be improved
+    //     let serial = users.collect().await;
 
-    //         serial
-    //     }
+    //     serial
+    // }
+
+    // pub async fn get_all_users(
+    //     &self,
+    // ) -> Result<std::vec::Vec<user_model::User>, mongodb::error::Error> {
+    //     let cursor = self.reg_col.find(None, None);
+
+    //     let res = cursor
+    //         .map(|mut x| x.as_vec::<user_model::User>())
+    //         .await
+    //         .ok();
+    //     Ok(res.unwrap())
+    // }
 }

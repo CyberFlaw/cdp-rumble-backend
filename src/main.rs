@@ -3,8 +3,7 @@ mod model;
 mod repository;
 
 use actix_web::{error, middleware::Logger, web, App, HttpResponse, HttpServer};
-use api::home;
-use api::user;
+use api::{home, room, user};
 // use openssl::ssl::{SslAcceptor, SslFiletype, SslMethod};
 use repository::mongo_repo::MongoRepo;
 
@@ -13,6 +12,7 @@ async fn main() -> std::io::Result<()> {
     const HOST: &str = "127.0.0.1";
     const PORT: u16 = 5000;
 
+    // making an ssl certificate for the server
     // let mut builder = SslAcceptor::mozilla_intermediate(SslMethod::tls()).unwrap();
     // builder
     //     .set_private_key_file("./keys/key.pem", SslFiletype::PEM)
@@ -42,6 +42,8 @@ async fn main() -> std::io::Result<()> {
             .service(home::index_responce)
             .service(user::register_user)
             .service(user::fetch_user_data)
+            .service(room::add_room)
+            .service(room::fetch_room_data)
     })
     .bind((HOST, PORT))?
     .run()

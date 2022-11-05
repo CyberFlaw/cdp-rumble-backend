@@ -31,6 +31,7 @@ pub async fn register_user(mut payload: web::Payload, req: HttpRequest) -> Resul
     let db = req.app_data::<web::Data<MongoRepo>>().unwrap();
     let exists = db.user_exist(&obj.email).await;
 
+    // return _insert from the if and return it as impl Responder, to give valid HTTP responce
     if exists {
         let _insert = match db.register_user(obj).await {
             Ok(_val) => println!("Successfully inserted!"),
@@ -41,22 +42,23 @@ pub async fn register_user(mut payload: web::Payload, req: HttpRequest) -> Resul
     Ok(HttpResponse::Accepted().body("User Registered!"))
 }
 
+//  Get all 6 digit ids of users in the database
+// fix the cursor stream handler
+#[get("/user/all")]
+pub async fn fetch_all_users() -> Result<impl Responder> {
+    // let db = req.app_data::<web::Data<MongoRepo>>().unwrap();
+    // let users = db.get_all_users().await?;
+
+    // Ok(HttpResponse::Ok().json(web::Json(users)))
+    Ok(HttpResponse::Found().body("Need to fix the db driver code"))
+}
+
 //  Get details from unique 6 digit number
 #[get("/user/{id}")]
 pub async fn fetch_user_data(id: web::Path<u32>, req: HttpRequest) -> Result<impl Responder> {
     let id = id.into_inner();
     let db = req.app_data::<web::Data<MongoRepo>>().unwrap();
-    let obj = db.find_user(id).await.unwrap();
+    let obj = db.find_user(id).await.ok().expect("Failed to fetch user");
 
     Ok(HttpResponse::Ok().json(obj))
 }
-
-//  Get all 6 digit ids of users in the database
-// fix the cursor stream handler
-// #[get("/user/all")]
-// pub async fn fetch_all_users(req: HttpRequest) -> Result<impl Responder> {
-//     let db = req.app_data::<web::Data<MongoRepo>>().unwrap();
-//     let users = db.get_all_users().await;
-
-//     Ok(HttpResponse::Ok().json(web::Json(users)))
-// }

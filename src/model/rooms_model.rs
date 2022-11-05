@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 pub struct Rooms {
     #[serde(rename = "_id", skip_serializing_if = "Option::is_none")]
     pub id: Option<ObjectId>,
-    pub user1: Option<ObjectId>,
-    pub user2: Option<ObjectId>,
+    pub user1: u32,
+    pub user2: u32,
     pub name: String,
 }

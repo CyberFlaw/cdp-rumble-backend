@@ -1,17 +1,16 @@
 extern crate dotenv;
 
-use crate::model::{room_model::Rooms, user_model::User};
+use crate::model::{rooms_model::Rooms, user_model::User};
 use dotenv::dotenv;
-use mongodb::{
-    // results::InsertOneResult,
-    Client,
-    Collection,
-};
+use mongodb::{Client, Collection, Database};
 use std::env;
 
 pub struct MongoRepo {
-    pub users: Collection<User>,
-    pub rooms: Collection<Rooms>,
+    pub reg_col: Collection<User>,
+    pub rooms_col: Collection<Rooms>,
+
+    pub users_db: Database,
+    pub message_db: Database,
 }
 
 impl MongoRepo {
@@ -23,13 +22,20 @@ impl MongoRepo {
         };
 
         let client = Client::with_uri_str(uri).await.unwrap();
-        let db = client.database("Rumble");
-        let user_col: Collection<User> = db.collection("Users");
-        let room_col: Collection<Rooms> = db.collection("Rooms");
+        let user_db = client.database("Users");
+        let user_col: Collection<User> = user_db.collection("Registered");
+        let room_col: Collection<Rooms> = user_db.collection("Rooms");
+
+        // This is being exported because whenever a new room is created a new collection is added so
+        // this Database object can be used to create collection with _id of new Room
+        let message_db = client.database("Messages");
 
         MongoRepo {
-            users: user_col,
-            rooms: room_col,
+            reg_col: user_col,
+            rooms_col: room_col,
+
+            users_db: user_db,
+            message_db: message_db,
         }
     }
 }
