@@ -1,3 +1,4 @@
+use futures::TryStreamExt;
 use mongodb::bson::doc;
 use mongodb::bson::extjson::de::Error;
 use mongodb::bson::oid::ObjectId;
@@ -10,6 +11,10 @@ use crate::model::user_model;
 use crate::repository::mongo_repo::MongoRepo;
 
 impl MongoRepo {
+    /*
+        This code requires through Error Handling. For the time being, I'm letting it slide
+    */
+
     pub async fn register_user(&self, new: user::User) -> Result<InsertOneResult, Error> {
         // generate 6 digit uuid
         let mut rng = rand::thread_rng();
@@ -63,31 +68,17 @@ impl MongoRepo {
         Ok(user.unwrap())
     }
 
-    //     fix this
+    pub async fn get_all_users(&self) -> Vec<user_model::User> {
+        let users = self
+            .reg_col
+            .find(None, None)
+            .await
+            .ok()
+            .expect("Failed to retrive users");
 
-    // pub async fn get_all_users(&self) -> Vec<user_model::User> {
-    //     let users = self
-    //         .reg_col
-    //         .find(None, None)
-    //         .await
-    //         .ok()
-    //         .expect("Failed to retrive users");
+        // This code could seriously use some error handling... Must be improved
+        let serial: Vec<user_model::User> = users.try_collect().await.unwrap();
 
-    //     // This code could seriously use some error handling... Must be improved
-    //     let serial = users.collect().await;
-
-    //     serial
-    // }
-
-    // pub async fn get_all_users(
-    //     &self,
-    // ) -> Result<std::vec::Vec<user_model::User>, mongodb::error::Error> {
-    //     let cursor = self.reg_col.find(None, None);
-
-    //     let res = cursor
-    //         .map(|mut x| x.as_vec::<user_model::User>())
-    //         .await
-    //         .ok();
-    //     Ok(res.unwrap())
-    // }
+        serial
+    }
 }

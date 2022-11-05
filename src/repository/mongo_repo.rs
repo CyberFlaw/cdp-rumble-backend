@@ -26,8 +26,10 @@ impl MongoRepo {
         let user_col: Collection<User> = user_db.collection("Registered");
         let room_col: Collection<Rooms> = user_db.collection("Rooms");
 
-        // This is being exported because whenever a new room is created a new collection is added so
-        // this Database object can be used to create collection with _id of new Room
+        /*  This is being exported because whenever a new room is
+        created a new collection is added so this Database
+        object can be used to create collection with _id of new Room */
+
         let message_db = client.database("Messages");
 
         MongoRepo {

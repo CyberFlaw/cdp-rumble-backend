@@ -44,13 +44,13 @@ pub async fn register_user(mut payload: web::Payload, req: HttpRequest) -> Resul
 
 //  Get all 6 digit ids of users in the database
 // fix the cursor stream handler
-#[get("/user/all")]
-pub async fn fetch_all_users() -> Result<impl Responder> {
-    // let db = req.app_data::<web::Data<MongoRepo>>().unwrap();
-    // let users = db.get_all_users().await?;
+#[get("/users/all")]
+pub async fn fetch_all_users(req: HttpRequest) -> Result<impl Responder> {
+    let db = req.app_data::<web::Data<MongoRepo>>().unwrap();
+    let users = db.get_all_users().await;
 
-    // Ok(HttpResponse::Ok().json(web::Json(users)))
-    Ok(HttpResponse::Found().body("Need to fix the db driver code"))
+    Ok(HttpResponse::Ok().json(web::Json(users)))
+    // Ok(HttpResponse::Found().body("Need to fix the db driver code"))
 }
 
 //  Get details from unique 6 digit number
