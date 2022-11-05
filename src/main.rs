@@ -39,12 +39,12 @@ async fn main() -> std::io::Result<()> {
             .wrap(logger)
             .app_data(db_data.clone())
             .app_data(json_config)
-            .service(home::index_responce) // route: "/"
-            .service(user::register_user) // route: "/user/register""
-            .service(user::fetch_user_data) // route: "/users/all"
-            .service(user::fetch_all_users) // route: "/user/{id}"
-            .service(room::add_room) // route: "/"
-            .service(room::fetch_room_data) // route: "/"
+            .service(home::index_responce) // method: post, route: "/"
+            .service(user::register_user) // method: get, route: "/user/register""
+            .service(user::fetch_user_data) // method: get, route: "/user/{id}"
+            .service(user::fetch_all_users) // method: get, route: "/users/all"
+            .service(room::add_room) // method: post, route: "/join/{user}/{friend}/"
+            .service(room::fetch_room_data) // method: get, route: "/rooms/{name}"
     })
     .bind((HOST, PORT))?
     .run()

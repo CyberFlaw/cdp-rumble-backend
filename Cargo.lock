@@ -1827,6 +1827,7 @@ dependencies = [
  "dotenv",
  "env_logger",
  "futures",
+ "log",
  "mongodb",
  "openssl",
  "rand",
