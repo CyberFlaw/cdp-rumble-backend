@@ -28,7 +28,7 @@ The server is running an Actix Web app which is built in Rust. The src is divide
 
 **model** : This directory contains all the document models for the MongoDB collections
 
-**repository**: This directory contains all the database operations done on the server side
+**repository** : This directory contains all the database operations done on the server side
 
 ### Database
 
@@ -125,15 +125,11 @@ The main reason I chose Rust over Node.js, is the pain of the lack of logging an
 
 ## TODO
 
-- Resolve `mongodb::Cursor` into JSON
-
-- Investigate on WebSockets to send `wss:\\` requests
-
-- Improve the Error Logger
+- Investigate on WebSockets to open `wss:\\` connections
 
 - Resolve a few functions more cleanly, instead of workarounds and with full error handling
 
-- Implemet `tokio` for async rust and learn more about it
+- Dockerize (if extra time is available)
 
 ## How to run the code
 
