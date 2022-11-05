@@ -4,7 +4,7 @@
 
 This repo consists of the backend code for Rumble Chatroom. This is built for TinkeHub Career Development Program 2.0
 
-The backend is created in Actix Web framework in Rust. I used this specific framework due to the availability of both HTTP and WSS support and its blazing-fast speed, which puts Node.js and Python to shame
+The backend is created in Actix Web framework in Rust. I used this specific framework due to the availability of both HTTP and WSS support and its blazing-fast speed, which puts [Node.js and Python Performance](https://www.techempower.com/benchmarks/#section=data-r21) to shame
 
 The backend will be dockerized and will be deployed in a droplet in Digital Ocean or Render according to the time available
 
@@ -41,7 +41,7 @@ The `Users` database contains 2 collections:
 - Registered
 - Rooms
 
-`Registered` contains the data of the users authenticated from the front-end by Auth0. The schema is shown below
+`Registered` contains the data of the users authenticated from the front end by Firebase. The schema is shown below
 
 ```rust
 #[derive(Debug, Serialize, Deserialize)]
@@ -119,7 +119,7 @@ A lot of problems have been faced while developing. I'm really new to Rust (1 or
 
 The main reason I chose Rust over Node.js, is the pain of the lack of logging and error handling Node have. Yes, you can configure it with external packages but it's very easy for one to make bugs in Node.js due to its dynamic type system. Even though I'm familiar with Node I'm not a big fan of it. Now the actual problems I had when developing this apart from my conceptual and syntactical bottlenecks are
 
-- MongoDB SDK for Rust is very vaguely documented. The only proper resource I had was a blog, whose methods are outdated in modern async Rust, and a dev conference from 2019.
+- MongoDB SDK for Rust is very vaguely documented. The only proper resource I had was a blog, whose methods are outdated in modern async Rust, and a dev conference from 2019. I even had to go into StackOverflow and ask a question to solve a problem, due to the lack of official and unoffical citings
 
 - WebSocket support from Actix Web was something that pulled me into using this framework, but it's the same thing that didn't work for me. Even the sample code in the documentation didn't work for me. I'm not sure if it's something wrong on my part or the actual Framework itself because I'm running very low on time
 
