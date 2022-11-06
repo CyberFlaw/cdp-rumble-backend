@@ -23,4 +23,4 @@ smartcore = {version = "0.2.1", features=["serde"]}
 [dependencies.mongodb]
 version = "2.3.0"
 default-features = false
-features = ["async-std-runtime"]
+features = ["async-std-runtime","openssl-tls"]

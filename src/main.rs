@@ -1,10 +1,16 @@
 mod api;
 mod model;
 mod repository;
+mod websocket;
 
 use actix_web::{error, middleware::Logger, web, App, HttpResponse, HttpServer};
-use api::{home, room, user};
 // use openssl::ssl::{SslAcceptor, SslFiletype, SslMethod};
+
+/*
+Only enable this route after legacy websocket code is upgraded
+use websocket::ws;
+*/
+use api::{home, room, user};
 use repository::mongo_repo::MongoRepo;
 
 #[actix_web::main]

@@ -60,7 +60,7 @@
       },
       {
         "v": "1",
-        "endpoint": "http://127.0.0.1:5000/user/all",
+        "endpoint": "http://127.0.0.1:5000/users/all",
         "name": "fetch all user ids",
         "params": [],
         "headers": [
@@ -114,9 +114,20 @@
       },
       {
         "v": "1",
-        "endpoint": "http://127.0.0.1:5000/join/430974/283544",
+        "endpoint": "http://127.0.0.1:5000/join",
         "name": "add room",
-        "params": [],
+        "params": [
+          {
+            "key": "user",
+            "value": "430974",
+            "active": true
+          },
+          {
+            "key": "friend",
+            "value": "283544",
+            "active": true
+          }
+        ],
         "headers": [
           {
             "active": true,

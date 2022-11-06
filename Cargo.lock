@@ -1426,6 +1426,8 @@ dependencies = [
  "hmac",
  "lazy_static",
  "md-5",
+ "openssl",
+ "openssl-probe",
  "os_info",
  "pbkdf2",
  "percent-encoding",
@@ -1443,6 +1445,7 @@ dependencies = [
  "take_mut",
  "thiserror",
  "tokio",
+ "tokio-openssl",
  "tokio-rustls",
  "tokio-util",
  "trust-dns-proto",
@@ -1579,6 +1582,12 @@ dependencies = [
  "quote",
  "syn",
 ]
+
+[[package]]
+name = "openssl-probe"
+version = "0.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ff011a302c396a5197692431fc1948019154afc178baf7d8e37367442a4601cf"
 
 [[package]]
 name = "openssl-src"
@@ -2258,6 +2267,18 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "tokio-openssl"
+version = "0.6.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c08f9ffb7809f1b20c1b398d92acf4cc719874b3b2b2d9ea2f09b4a80350878a"
+dependencies = [
+ "futures-util",
+ "openssl",
+ "openssl-sys",
+ "tokio",
 ]
 
 [[package]]

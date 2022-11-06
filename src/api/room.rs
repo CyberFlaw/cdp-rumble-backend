@@ -27,6 +27,8 @@ pub async fn add_room(info: web::Query<AddQuery>, req: HttpRequest) -> Result<im
     let db = req.app_data::<web::Data<MongoRepo>>().unwrap();
     let exists = db.room_exists(&format!("{}{}", user_str, friend_str)).await;
 
+    // if room exist throw 500 Error
+
     // return _insert from the if and return it as impl Responder, to give valid HTTP responce
     if exists {
         let _insert = db
@@ -40,6 +42,10 @@ pub async fn add_room(info: web::Query<AddQuery>, req: HttpRequest) -> Result<im
     }
 
     // db driver code to (update) push the room id to both users [room] attribute
+    // db.append_room_user(info.user, format!("{}{}", user_str, friend_str))
+    //     .await;
+    // db.append_room_user(info.friend, format!("{}{}", user_str, friend_str))
+    //     .await;
 
     let responce_str = format!(
         "Room created with room name: {}",

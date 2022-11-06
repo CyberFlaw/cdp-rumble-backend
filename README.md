@@ -1,4 +1,4 @@
-# Rumble Backend (CDP 2.0)
+# Rumble Backend (CDP 2.0 - Task 2)
 
 [This project is still under development. Read me will be modified when deployed 🚀]
 
@@ -103,7 +103,11 @@ pub struct Messages {
 
 - `/room/{room_id}` : Fetched data about a room
 
-- `/echo` : **Not Implemented!** This route takes `wss` request from a client and echos it to the room the user sends the request from
+- `/echo/{room_id}` : **Not Implemented!** This route handles the chat room logic.
+
+### Side Note about Websocket Route
+
+The route `/echo/{room_id}` only becomes functions only after upgrading the `actix` crate to version `0.13.0` and `actix-web-actors` crate to version `4.1.0` as the sample code I used as reference is build using versions `0.10.0` and `0.3.2` respectively, which requies `actix-web` crate (the crate used for creating the REST API) to be downgraded to version `3.2.0` from version `4.0.0`
 
 Here are a few screenshots of the requests
 
@@ -117,15 +121,15 @@ Here are a few screenshots of the requests
 
 A lot of problems have been faced while developing. I'm really new to Rust (1 or 2 weeks of experience), and my concepts are still not solid yet. The fact that I was able to complete this far within a week is a big deal for me. I haven't challenged myself this much in such a long time. In the end, I'm just happy I did this far from level zero within a week
 
-The main reason I chose Rust over Node.js, is the pain of the lack of logging and error handling Node have. Yes, you can configure it with external packages but it's very easy for one to make bugs in Node.js due to its dynamic type system. Even though I'm familiar with Node I'm not a big fan of it. Now the actual problems I had when developing this apart from my conceptual and syntactical bottlenecks are
+The main reason I chose Rust over Node.js, is the pain of the lack of logging and error handling Node have. Yes, you can configure it with external packages and they are convenient but, it's very easy for me to make bugs in Node.js. Even though I'm familiar with Node.js I'm personally not a big fan of it. Now the actual problems I had when developing this apart from my conceptual and syntactical bottlenecks are
 
-- MongoDB SDK for Rust is very vaguely documented. The only proper resource I had was a blog, whose methods are outdated in modern async Rust, and a dev conference from 2019. I even had to go into StackOverflow and ask a question to solve a problem, due to the lack of official and unoffical citings
+- WebSocket support from Actix Web was something that pulled me into using this framework, but it's the same thing that didn't work for me. Even the sample code in the documentation didn't work for me by using a normal tool like Postman or Hopscotch. I had to use a tool called `wscat` made by the WebSocket team in Node.js for getting a debuggable output.
 
-- WebSocket support from Actix Web was something that pulled me into using this framework, but it's the same thing that didn't work for me. Even the sample code in the documentation didn't work for me. I'm not sure if it's something wrong on my part or the actual Framework itself because I'm running very low on time
+- MongoDB SDK for Rust is very vaguely documented. The only proper resource I had was a blog, whose methods are outdated in modern async Rust, and a dev conference from 2019. I even had to go into StackOverflow and ask a question to solve a problem, due to the lack of official and unofficial citings of code
 
 ## TODO
 
-- Investigate on WebSockets to open `wss:\\` connections
+- Upgrade `actix-web-actors` to version `0.4.0` to enable the WebSocket route. Until then FireBase (Firestore) will be used as the chat system for **Rumble**
 
 - Resolve a few functions more cleanly, instead of workarounds and with full error handling
 

@@ -1,7 +1,6 @@
 use futures::TryStreamExt;
 use mongodb::bson::doc;
 use mongodb::bson::extjson::de::Error;
-use mongodb::bson::oid::ObjectId;
 use mongodb::results::InsertOneResult;
 
 use rand::Rng;
@@ -20,7 +19,7 @@ impl MongoRepo {
         let mut rng = rand::thread_rng();
         let uuid: u32 = rng.gen_range(100_000..=999_999);
 
-        let rooms: Vec<ObjectId> = Vec::new();
+        let rooms: Vec<String> = Vec::new();
         let new_doc = user_model::User {
             id: None,
             name: new.name,
@@ -81,4 +80,30 @@ impl MongoRepo {
 
         serial
     }
+
+    // broken code
+    // pub async fn append_room_user(&self, user_id: u32, room: String) {
+    //     let existing = self.find_user(user_id).await.unwrap();
+    //     let filter = doc! {
+    //         "unqid": user_id
+    //     };
+
+    //     let mut rooms = existing.rooms;
+    //     rooms.push(room);
+
+    //     let new_doc = doc! {
+    //         "id": existing.id,
+    //         "name": existing.name,
+    //         "unqid": existing.unqid,
+    //         "image": existing.image,
+    //         "email": existing.email,
+    //         "room": rooms
+    //     };
+
+    //     self.reg_col
+    //         .update_one(filter, new_doc, None)
+    //         .await
+    //         .ok()
+    //         .expect("Error updating user");
+    // }
 }
