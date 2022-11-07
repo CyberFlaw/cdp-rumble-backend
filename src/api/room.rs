@@ -1,5 +1,4 @@
 use actix_web::{get, post, web, HttpRequest, HttpResponse, Responder, Result};
-// use log::debug;
 use serde::Deserialize;
 
 use crate::repository::mongo_repo::MongoRepo;
@@ -22,10 +21,12 @@ pub async fn add_room(info: web::Query<AddQuery>, req: HttpRequest) -> Result<im
 
     if exists {
         let _insert = db
-            .register_room(info.user, info.friend, room_id)
+            .register_room(info.user, info.friend, room_id.clone())
             .await
             .unwrap();
     }
+
+    // db.add_chat_room(room_id);
 
     // db driver code to (update) push the room id to both users [room] attribute
     db.append_room_user(info.user, format!("{}{}", user_str, friend_str).to_string())

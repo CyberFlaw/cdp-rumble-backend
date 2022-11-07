@@ -6,6 +6,14 @@ use crate::repository::mongo_repo::MongoRepo;
 
 const MAX_SIZE: usize = 262_144; // 256k
 
+/*
+---------------------------------------------------------
+This code requires heavy Error Handling. The code
+can `panic` at some ambiguios conditions. Please
+handle the code with caution
+---------------------------------------------------------
+*/
+
 #[derive(Serialize, Deserialize)]
 pub struct User {
     pub name: String,
@@ -43,14 +51,12 @@ pub async fn register_user(mut payload: web::Payload, req: HttpRequest) -> Resul
 }
 
 //  Get all 6 digit ids of users in the database
-// fix the cursor stream handler
 #[get("/users/all")]
 pub async fn fetch_all_users(req: HttpRequest) -> Result<impl Responder> {
     let db = req.app_data::<web::Data<MongoRepo>>().unwrap();
     let users = db.get_all_users().await;
 
     Ok(HttpResponse::Ok().json(web::Json(users)))
-    // Ok(HttpResponse::Found().body("Need to fix the db driver code"))
 }
 
 //  Get details from unique 6 digit number

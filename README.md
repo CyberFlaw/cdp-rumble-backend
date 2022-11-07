@@ -1,6 +1,6 @@
 # Rumble Backend (CDP 2.0 - Task 2)
 
-[This project is still under development. Read me will be modified when deployed 🚀]
+[Deployed in Render](https://rumble-backend.onrender.com/) 🚀
 
 This repo consists of the backend code for Rumble Chatroom. This is built for TinkeHub Career Development Program 2.0
 
@@ -91,23 +91,44 @@ pub struct Messages {
 
 ## End Points
 
-- `/` : Health Check
+**Note**: You can use the `endpoint.json` file and import it to Hopscotch and replace it with the deployed URI
 
-- `/user/register` : To register a user. A JSON should be passed in the body
+- `GET: /` : Health Check
 
-- `/user/{id}` : To get details of the user
+- `POST: /user/register` : To register a user. A JSON should be passed in the body
 
-- `/user/all` : To get all the users
+- `GET: /user/{id}` : To get details of the user
 
-- `/join/{user_id}/{friend_id}` : This takes the 6-digit unique ids of 2 users and makes a room and appends it to the room Array in the `Registered` collection. (This will be replaced with a query pattern URL)
+- `GET: /user/all` : To get all the users
 
-- `/room/{room_id}` : Fetched data about a room
+- `POST: /join?user={user}&friend={friend}` : This takes the 6-digit unique ids of 2 users and makes a room and appends it to the room Array in the `Registered` collection. (This will be replaced with a query pattern URL)
 
-- `/echo/{room_id}` : **Not Implemented!** This route handles the chat room logic.
+```JSON
+{
+  "name": "John",
+  "image": "https://lh3.googleusercontent.com/a/ALm5wu07mTMPimG1xUJ_EC0HmFdnEBiIQKTmblDbDQBh=s96-c",
+  "email": "dev.test@gmail.com"
+}
+```
 
-### Side Note about Websocket Route
+- `GET: /room/{room_id}` : Fetched data about a room
 
-The route `/echo/{room_id}` only becomes functions only after upgrading the `actix` crate to version `0.13.0` and `actix-web-actors` crate to version `4.1.0` as the sample code I used as reference is build using versions `0.10.0` and `0.3.2` respectively, which requies `actix-web` crate (the crate used for creating the REST API) to be downgraded to version `3.2.0` from version `4.0.0`
+- `POST: /sync/{room_id}` : Backup messages to DB
+
+```JSON
+{
+    "owner": 732380,
+    "text": "Hello"
+}
+```
+
+- `GET: /sync/all/{room_id}` : Get all messages from DB (Improvements to this logic cited in `./src/api/echo.rs` of the repository)
+
+- `PUT: /sync/msg?room_id={room_id}&msg_id={msg_id}&text={new_msg}` : Edits a message
+
+- `DELETE: /sync/msg?room_id={room_id}&msg_id={msg_id}` : Deletes a message
+
+- `WSS: /echo/{room_id}` : **Not Implemented!** This route handles the chat room logic. Use `wscat -c {uri}/{endpoint}` for testing. For some reason, WSS in Postman or Hopscotch doesn't play well with the raw Actor Model provided by `actix`
 
 Here are a few screenshots of the requests
 
@@ -129,11 +150,11 @@ The main reason I chose Rust over Node.js, is the pain of the lack of logging an
 
 ## TODO
 
-- Upgrade `actix-web-actors` to version `0.4.0` to enable the WebSocket route. Until then FireBase (Firestore) will be used as the chat system for **Rumble**
+- Fix the WebSocket issue, where data don't get synched up into the Hashmap. Until then FireBase (Firestore) will be used as the chat system for **Rumble**
+
+- Implement Mutex Lock using Arc talk between `MongoRepo` and Actix web routes. After Implementing this, then only Message routes work
 
 - Resolve a few functions more cleanly, instead of workarounds and with full error handling
-
-- Dockerize (if extra time is available)
 
 ## How to run the code
 
@@ -155,4 +176,10 @@ cargo run
 
 ```bash
 cargo watch -x 'run app'
+```
+
+- To test the WebSocket Connection `wscat` should be installed
+
+```npm
+npm install -g wscat
 ```

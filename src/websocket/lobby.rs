@@ -6,8 +6,8 @@ use std::collections::{HashMap, HashSet};
 type Socket = Recipient<WsMessage>;
 
 pub struct Lobby {
-    sessions: HashMap<u32, Socket>,       //self id to self
-    rooms: HashMap<String, HashSet<u32>>, //room id  to list of users id
+    sessions: HashMap<u32, Socket>,
+    rooms: HashMap<String, HashSet<u32>>,
 }
 
 impl Default for Lobby {

@@ -12,7 +12,11 @@ use crate::repository::mongo_repo::MongoRepo;
 
 impl MongoRepo {
     /*
-        This code requires through Error Handling. For the time being, I'm letting it slide
+    ---------------------------------------------------------
+    This code requires heavy Error Handling. The code
+    can `panic` at some ambiguios conditions. Please
+    handle the code with caution
+    ---------------------------------------------------------
     */
 
     pub async fn register_user(&self, new: user::User) -> Result<InsertOneResult, Error> {
@@ -82,7 +86,6 @@ impl MongoRepo {
         serial
     }
 
-    // broken code
     pub async fn append_room_user(&self, user_id: u32, room: String) {
         let existing = self.find_user(user_id).await.unwrap();
 
@@ -111,6 +114,6 @@ impl MongoRepo {
             .ok()
             .expect("Error updating user");
 
-        info!("{:?}", update_info)
+        info!("{:?}", update_info);
     }
 }

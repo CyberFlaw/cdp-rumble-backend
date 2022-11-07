@@ -6,12 +6,6 @@ use crate::model::rooms_model;
 use crate::repository::mongo_repo::MongoRepo;
 
 impl MongoRepo {
-    // code for room specific database operations
-
-    // function to get all rooms from a user
-
-    //     function to add rooms to registered::user[rooms]
-
     // function to add room to collection
     pub async fn register_room(
         &self,
