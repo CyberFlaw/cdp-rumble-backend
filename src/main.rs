@@ -3,15 +3,13 @@ mod model;
 mod repository;
 mod websocket;
 
+use actix::Actor;
 use actix_web::{error, middleware::Logger, web, App, HttpResponse, HttpServer};
 // use openssl::ssl::{SslAcceptor, SslFiletype, SslMethod};
 
-/*
-Only enable this route after legacy websocket code is upgraded
-use websocket::ws;
-*/
-use api::{home, room, user};
+use api::{echo, home, room, user};
 use repository::mongo_repo::MongoRepo;
+use websocket::lobby;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -26,6 +24,9 @@ async fn main() -> std::io::Result<()> {
     // builder
     //     .set_certificate_chain_file("./keys/cert.pem")
     //     .unwrap();
+
+    let chat_server = lobby::Lobby::default().start();
+    let chat_server_data = web::Data::new(chat_server);
 
     let db = MongoRepo::init().await;
     let db_data = web::Data::new(db);
@@ -43,14 +44,16 @@ async fn main() -> std::io::Result<()> {
             });
         App::new()
             .wrap(logger)
-            .app_data(db_data.clone())
             .app_data(json_config)
-            .service(home::index_responce) // method: post, route: "/"
+            .app_data(db_data.clone())
+            .app_data(chat_server_data.clone())
+            .service(home::health_check) // method: post, route: "/"
             .service(user::register_user) // method: get, route: "/user/register""
             .service(user::fetch_user_data) // method: get, route: "/user/{id}"
             .service(user::fetch_all_users) // method: get, route: "/users/all"
             .service(room::add_room) // method: post, route: "/join?user={user}&friend={friend}"
             .service(room::fetch_room_data) // method: get, route: "/rooms/{name}"
+            .service(echo::start_connection) // method: get, route: "/rooms/{name}"
     })
     .bind((HOST, PORT))?
     .run()

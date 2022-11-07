@@ -1,14 +1,8 @@
 use actix_web::{get, post, web, HttpRequest, HttpResponse, Responder, Result};
 // use log::debug;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
 use crate::repository::mongo_repo::MongoRepo;
-
-#[derive(Serialize, Deserialize)]
-struct Message {
-    msg: String,
-    owner: i64,
-}
 
 #[derive(Deserialize)]
 pub struct AddQuery {
