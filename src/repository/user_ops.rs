@@ -3,6 +3,7 @@ use mongodb::bson::doc;
 use mongodb::bson::extjson::de::Error;
 use mongodb::results::InsertOneResult;
 
+use log::info;
 use rand::Rng;
 
 use crate::api::user;
@@ -82,28 +83,34 @@ impl MongoRepo {
     }
 
     // broken code
-    // pub async fn append_room_user(&self, user_id: u32, room: String) {
-    //     let existing = self.find_user(user_id).await.unwrap();
-    //     let filter = doc! {
-    //         "unqid": user_id
-    //     };
+    pub async fn append_room_user(&self, user_id: u32, room: String) {
+        let existing = self.find_user(user_id).await.unwrap();
 
-    //     let mut rooms = existing.rooms;
-    //     rooms.push(room);
+        let filter = doc! {
+            "_id": existing.id
+        };
 
-    //     let new_doc = doc! {
-    //         "id": existing.id,
-    //         "name": existing.name,
-    //         "unqid": existing.unqid,
-    //         "image": existing.image,
-    //         "email": existing.email,
-    //         "room": rooms
-    //     };
+        let mut rooms = existing.rooms;
+        rooms.push(room.clone());
 
-    //     self.reg_col
-    //         .update_one(filter, new_doc, None)
-    //         .await
-    //         .ok()
-    //         .expect("Error updating user");
-    // }
+        let new_doc = doc! {
+            "$set": {
+                "_id": existing.id,
+                "name": existing.name,
+                "unqid": existing.unqid,
+                "image": existing.image,
+                "email": existing.email,
+                "rooms": rooms
+            }
+        };
+
+        let update_info = self
+            .reg_col
+            .update_one(filter, new_doc, None)
+            .await
+            .ok()
+            .expect("Error updating user");
+
+        info!("{:?}", update_info)
+    }
 }

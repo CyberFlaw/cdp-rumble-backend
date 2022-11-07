@@ -17,35 +17,30 @@ pub struct AddQuery {
 }
 
 // add room to the db
-// Querry parametrs should be used instead of explicit routes /join?usr={Userid}&frnd={Userid}
 #[post("/join")]
 pub async fn add_room(info: web::Query<AddQuery>, req: HttpRequest) -> Result<impl Responder> {
     let user_str = info.user.to_string();
     let friend_str = info.friend.to_string();
+    let room_id = format!("{}{}", user_str, friend_str);
 
-    // db driver code to (insert) create a new record in Rooms collection in Registered db
     let db = req.app_data::<web::Data<MongoRepo>>().unwrap();
-    let exists = db.room_exists(&format!("{}{}", user_str, friend_str)).await;
+    let exists = db.room_exists(&room_id).await;
 
-    // if room exist throw 500 Error
-
-    // return _insert from the if and return it as impl Responder, to give valid HTTP responce
     if exists {
         let _insert = db
-            .register_room(
-                info.user,
-                info.friend,
-                format!("{}{}", user_str, friend_str),
-            )
+            .register_room(info.user, info.friend, room_id)
             .await
             .unwrap();
     }
 
     // db driver code to (update) push the room id to both users [room] attribute
-    // db.append_room_user(info.user, format!("{}{}", user_str, friend_str))
-    //     .await;
-    // db.append_room_user(info.friend, format!("{}{}", user_str, friend_str))
-    //     .await;
+    db.append_room_user(info.user, format!("{}{}", user_str, friend_str).to_string())
+        .await;
+    db.append_room_user(
+        info.friend,
+        format!("{}{}", user_str, friend_str).to_string(),
+    )
+    .await;
 
     let responce_str = format!(
         "Room created with room name: {}",
