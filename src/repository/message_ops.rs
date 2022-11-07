@@ -1,41 +1,51 @@
 use bson::oid::ObjectId;
 use futures::TryStreamExt;
+use mongodb::results::CollectionSpecification;
 use mongodb::{bson::doc, Collection};
-use std::sync::Arc;
 
 use crate::model::message_model::Messages;
 use crate::repository::mongo_repo::MongoRepo;
 
 impl MongoRepo {
     // code for message specific database operations
-    pub async fn add_chat_room(&mut self, room_id: String) {
-        let message_db = self.message_db.clone();
-        let new_room: Collection<Messages> = message_db
-            .collection(format!("{}", room_id).as_str())
-            .clone();
-
-        let room_lock = Arc::clone(&self.activated_rooms);
-        room_lock.lock().unwrap().insert(room_id, new_room);
-    }
 
     // do proper error handling!!!
     pub async fn get_room_coll(&self, room_id: String) -> Collection<Messages> {
-        let room_lock = Arc::clone(&self.activated_rooms);
+        let msg_db = self.message_db.clone();
 
-        let room = room_lock.lock().unwrap().get(&room_id).unwrap().clone();
-        room
+        let db_cursor = msg_db
+            .list_collections(None, None)
+            .await
+            .ok()
+            .expect("Room not found");
+
+        let room_specs: Vec<CollectionSpecification> = db_cursor
+            .try_collect()
+            .await
+            .ok()
+            .expect("Failed to fetch collections");
+
+        let mut room_name = String::new();
+
+        for r in room_specs {
+            if r.name == room_id {
+                room_name = r.name;
+            }
+        }
+
+        msg_db.collection(room_name.as_str())
     }
 
     pub async fn add_message(&self, room_id: String, msg: String, owner: u32) {
-        let room_coll = self.get_room_coll(room_id).await;
+        let room = self.get_room_coll(room_id).await;
+
         let new_msg = Messages {
             id: None,
             owner: owner,
             text: msg,
         };
 
-        room_coll
-            .insert_one(new_msg, None)
+        room.insert_one(new_msg, None)
             .await
             .expect("Failed to store msg");
     }

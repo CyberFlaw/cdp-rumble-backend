@@ -152,8 +152,6 @@ The main reason I chose Rust over Node.js, is the pain of the lack of logging an
 
 - Fix the WebSocket issue, where data don't get synched up into the Hashmap. Until then FireBase (Firestore) will be used as the chat system for **Rumble**
 
-- Implement Mutex Lock using Arc talk between `MongoRepo` and Actix web routes. After Implementing this, then only Message routes work
-
 - Resolve a few functions more cleanly, instead of workarounds and with full error handling
 
 ## How to run the code
