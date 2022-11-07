@@ -1,13 +1,16 @@
 extern crate dotenv;
+use crate::model::{message_model::Messages, rooms_model::Rooms, user_model::User};
 
-use crate::model::{rooms_model::Rooms, user_model::User};
 use dotenv::dotenv;
 use mongodb::{Client, Collection, Database};
+
+use std::collections::HashMap;
 use std::env;
 
 pub struct MongoRepo {
     pub reg_col: Collection<User>,
     pub rooms_col: Collection<Rooms>,
+    pub activated_rooms: HashMap<String, Collection<Messages>>,
 
     pub users_db: Database,
     pub message_db: Database,
@@ -32,9 +35,12 @@ impl MongoRepo {
 
         let message_db = client.database("Messages");
 
+        let act_room: HashMap<String, Collection<Messages>> = HashMap::new();
+
         MongoRepo {
             reg_col: user_col,
             rooms_col: room_col,
+            activated_rooms: act_room,
 
             users_db: user_db,
             message_db: message_db,
