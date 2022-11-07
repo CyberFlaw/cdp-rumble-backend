@@ -33,7 +33,7 @@
       },
       {
         "v": "1",
-        "endpoint": "http://127.0.0.1:5000/user/430974",
+        "endpoint": "http://127.0.0.1:5000/user/732380",
         "name": "fetch user by id",
         "params": [],
         "headers": [
@@ -61,7 +61,7 @@
       {
         "v": "1",
         "endpoint": "http://127.0.0.1:5000/users/all",
-        "name": "fetch all user ids",
+        "name": "fetch all users",
         "params": [],
         "headers": [
           {
@@ -119,12 +119,12 @@
         "params": [
           {
             "key": "user",
-            "value": "430974",
+            "value": "732380",
             "active": true
           },
           {
             "key": "friend",
-            "value": "283544",
+            "value": "959781",
             "active": true
           }
         ],
@@ -152,7 +152,7 @@
       },
       {
         "v": "1",
-        "endpoint": "http://127.0.0.1:5000/room/430974283544",
+        "endpoint": "http://127.0.0.1:5000/room/732380959781",
         "name": "fetch room by id",
         "params": [],
         "headers": [
@@ -175,6 +175,141 @@
         "body": {
           "contentType": "application/json",
           "body": ""
+        }
+      },
+      {
+        "v": "1",
+        "endpoint": "http://127.0.0.1:5000/sync/732380959781",
+        "name": "backup to db",
+        "params": [],
+        "headers": [
+          {
+            "active": true,
+            "key": "Content-Type",
+            "value": ""
+          }
+        ],
+        "method": "POST",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        },
+        "preRequestScript": "",
+        "testScript": "",
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n    \"owner\": 732380,\n    \"text\": \"Hey\"\n}"
+        }
+      },
+      {
+        "v": "1",
+        "endpoint": "http://127.0.0.1:5000/sync/all/732380959781",
+        "name": "fetch msg from db",
+        "params": [],
+        "headers": [
+          {
+            "active": true,
+            "key": "Content-Type",
+            "value": ""
+          }
+        ],
+        "method": "GET",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        },
+        "preRequestScript": "",
+        "testScript": "",
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n  \"owner\": 732380,\n  \"text\": \"Hello\"\n}"
+        }
+      },
+      {
+        "v": "1",
+        "endpoint": "http://127.0.0.1:5000/sync/msg",
+        "name": "edit message",
+        "params": [
+          {
+            "key": "room_id",
+            "value": "732380959781",
+            "active": true
+          },
+          {
+            "key": "msg_id",
+            "value": "636994079f586d3d7fa5a015",
+            "active": true
+          },
+          {
+            "key": "text",
+            "value": "How are you",
+            "active": true
+          }
+        ],
+        "headers": [
+          {
+            "active": true,
+            "key": "Content-Type",
+            "value": ""
+          }
+        ],
+        "method": "PUT",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        },
+        "preRequestScript": "",
+        "testScript": "",
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n  \"owner\": 732380,\n  \"text\": \"Hello\"\n}"
+        }
+      },
+      {
+        "v": "1",
+        "endpoint": "http://127.0.0.1:5000/sync/msg",
+        "name": "delete message",
+        "params": [
+          {
+            "key": "room_id",
+            "value": "732380959781",
+            "active": true
+          },
+          {
+            "key": "msg_id",
+            "value": "636994079f586d3d7fa5a015",
+            "active": true
+          }
+        ],
+        "headers": [
+          {
+            "active": true,
+            "key": "Content-Type",
+            "value": ""
+          }
+        ],
+        "method": "DELETE",
+        "auth": {
+          "authType": "none",
+          "authActive": true,
+          "addTo": "Headers",
+          "key": "",
+          "value": ""
+        },
+        "preRequestScript": "",
+        "testScript": "",
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n  \"owner\": 732380,\n  \"text\": \"Hello\"\n}"
         }
       }
     ]
