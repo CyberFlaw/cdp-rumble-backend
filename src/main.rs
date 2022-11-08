@@ -5,7 +5,7 @@ mod websocket;
 
 use actix::Actor;
 use actix_web::{error, middleware::Logger, web, App, HttpResponse, HttpServer};
-use openssl::ssl::{SslAcceptor, SslFiletype, SslMethod};
+// use openssl::ssl::{SslAcceptor, SslFiletype, SslMethod};
 
 use api::{echo, home, room, user};
 use repository::mongo_repo::MongoRepo;
@@ -17,13 +17,13 @@ async fn main() -> std::io::Result<()> {
     const PORT: u16 = 5000;
 
     // making an ssl certificate for the server
-    let mut builder = SslAcceptor::mozilla_intermediate(SslMethod::tls()).unwrap();
-    builder
-        .set_private_key_file("./keys/key.pem", SslFiletype::PEM)
-        .unwrap();
-    builder
-        .set_certificate_chain_file("./keys/cert.pem")
-        .unwrap();
+    // let mut builder = SslAcceptor::mozilla_intermediate(SslMethod::tls()).unwrap();
+    // builder
+    //     .set_private_key_file("./keys/key.pem", SslFiletype::PEM)
+    //     .unwrap();
+    // builder
+    //     .set_certificate_chain_file("./keys/cert.pem")
+    //     .unwrap();
 
     let chat_server = lobby::Lobby::default().start();
     let chat_server_data = web::Data::new(chat_server);
