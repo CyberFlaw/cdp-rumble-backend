@@ -1,12 +1,12 @@
 # Rumble Backend (CDP 2.0 - Task 2)
 
-[Deployed in Render](https://rumble-backend.onrender.com/) 🚀
+🚀 Deployment Failed in `Render` | Render server cant complete Health Check. I will try to deploy it in Digital Ocean, not sure if there will be enough time
 
 This repo consists of the backend code for Rumble Chatroom. This is built for TinkeHub Career Development Program 2.0
 
-The backend is created in Actix Web framework in Rust. I used this specific framework due to the availability of both HTTP and WSS support and its blazing-fast speed, which puts [Node.js and Python Performance](https://www.techempower.com/benchmarks/#section=data-r21) to shame
+The backend is created in Actix Web framework in Rust. I used this specific framework due to the availability of both HTTP and WSS support and its blazing-fast speed, which puts [Node.js and Python Performance](https://www.techempower.com/benchmarks/#section=data-r21) to shame (a well-written code base will only yield such a dramatic result else the performance will be subpar in rust)
 
-The backend will be dockerized and will be deployed in a droplet in Digital Ocean or Render according to the time available
+The backend will be deployed in a droplet in Digital Ocean or Render according to the time available
 
 **Note:** This project is not complete at the time of submission. The several changes needed are documented inside the codebase itself. An overview will be provided in the below section.
 
@@ -49,7 +49,6 @@ pub struct User {
     #[serde(
         rename = "_id",
         skip_serializing_if = "Option::is_none",
-        // common::serialize_with = "serialize_object_id"
     )]
     pub id: Option<ObjectId>,
     pub name: String,
@@ -69,7 +68,7 @@ pub struct Rooms {
     pub id: Option<ObjectId>,
     pub user1: u32,     // 6 digit unique number
     pub user2: u32,     // 6 digit unique number
-    pub name: String,   // "unqid(user1)+unqid(user2)": String
+    pub name: String,   // "unqid(user1)+unqid(user2)": String Concatination
 }
 ```
 
@@ -91,7 +90,7 @@ pub struct Messages {
 
 ## End Points
 
-**Note**: You can use the `endpoint.json` file and import it to Hopscotch and replace it with the deployed URI
+**Note**: You can use the `endpoint.json` and import it to Hopscotch and replace it with the deployed URI
 
 - `GET: /` : Health Check
 
@@ -146,7 +145,11 @@ The main reason I chose Rust over Node.js, is the pain of the lack of logging an
 
 - WebSocket support from Actix Web was something that pulled me into using this framework, but it's the same thing that didn't work for me. Even the sample code in the documentation didn't work for me by using a normal tool like Postman or Hopscotch. I had to use a tool called `wscat` made by the WebSocket team in Node.js for getting a debuggable output.
 
-- MongoDB SDK for Rust is very vaguely documented. The only proper resource I had was a blog, whose methods are outdated in modern async Rust, and a dev conference from 2019. I even had to go into StackOverflow and ask a question to solve a problem, due to the lack of official and unofficial citings of code
+- MongoDB SDK for Rust is very vaguely documented. The only proper resource I had was a blog, whose methods are outdated in modern async Rust, and a dev conference from 2019
+
+- Deploying in Render. The program ran and build fine in my local system (WSL Ubuntu) and Render servers, but for some unknown reason, it can't complete the health check and host the backend
+
+![render error](/screenshots/render%20error.jpg)
 
 ## TODO
 
@@ -154,7 +157,7 @@ The main reason I chose Rust over Node.js, is the pain of the lack of logging an
 
 - Resolve a few functions more cleanly, instead of workarounds and with full error handling
 
-## How to run the code
+## How to run the Server
 
 - Install Rust and Cargo
 
@@ -162,6 +165,12 @@ The main reason I chose Rust over Node.js, is the pain of the lack of logging an
 
 ```bash
 git clone https://github.com/CyberFlaw/cdp-rumble-backend.git
+```
+
+- Add `.env` file
+
+```env
+MONGOURI=mongodb+srv://{uri}
 ```
 
 - Start the application
